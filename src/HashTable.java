@@ -22,7 +22,12 @@ public class HashTable<K, V> implements HashTableInterface<K,V> {
   }  // end tableLength
   
   public void tableInsert(K key, V value) throws HashException{
-	  ChainNode<K, V> newChainNode = new ChainNode(key, value, table[1]);
+	  if(table[(Integer)key]==null){
+		  table[(Integer)key] = new ChainNode(key, value, null);
+	  }
+	  else{
+		  ChainNode<K, V> newChainNode = new ChainNode(key, value, table[(Integer)key]);
+	  }  
 	  size++;
   }
   

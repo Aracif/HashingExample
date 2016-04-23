@@ -9,6 +9,7 @@ public class Driver {
 	//A-Z
 	public static void main(String[] args) throws IOException{
 		BufferedReader read = new BufferedReader(new InputStreamReader(System.in));
+		HashTable<Integer, String> table = new HashTable<>();
 		char[] charVal = new char[6];
 		
 		while(true){
@@ -38,6 +39,7 @@ public class Driver {
 					}
 					System.out.println("Total: " + total);
 					System.out.println("Hash value: " + total%3);
+					table.tableInsert(total%3, s);
 					break;
 					
 			case 2:
