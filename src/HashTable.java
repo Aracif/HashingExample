@@ -27,12 +27,11 @@ public class HashTable<K, V> implements HashTableInterface<K,V> {
 			table[(Integer)value] = new ChainNode(key, value, null);
 		}
 		else{
-			ChainNode<K, V> tail = table[(Integer)value];
-			ChainNode<K, V> newChainNode = new ChainNode(key, value, null);
+			ChainNode<K, V> tail = table[(Integer)value];			
 			while(tail.getNext()!=null){
 				tail = tail.getNext();
 			}
-			tail.setNext(newChainNode);		  
+			tail.setNext(new ChainNode(key, value, null));		  
 		}  
 		size++;
 	}
