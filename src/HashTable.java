@@ -23,37 +23,48 @@ public class HashTable<K, V> implements HashTableInterface<K,V> {
 
 	public void tableInsert(K key, V value) throws HashException{
 
-		if(table[(Integer)value]==null){
-			table[(Integer)value] = new ChainNode(key, value, null);
+		if(table[(Integer)value%3]==null){
+			table[(Integer)value%3] = new ChainNode(key, value, null);
 		}
 		else{
-			ChainNode<K, V> tail = table[(Integer)value];
-			ChainNode<K, V> newChainNode = new ChainNode(key, value, null);
+			ChainNode<K, V> tail = table[(Integer)value%3];			
 			while(tail.getNext()!=null){
 				tail = tail.getNext();
 			}
-			tail.setNext(newChainNode);		  
+			tail.setNext(new ChainNode(key, value, null));		  
 		}  
 		size++;
 	}
 
 	public boolean tableDelete(K searchKey){
+		ChainNode<K, V> current = null;
 		if(size>0){
 			for(int i = 0; i<3; i++){
-				if(table[i]!=null){
-					ChainNode<K, V> current = table[i];
-					if(current.getNext()==null){
-						current = null;
+				if(table[i].getKey().equals(searchKey)){
+					if(table[i].getNext()==null){
+						table[i]=null;
+					}
+					else{
+						table[i] = table[i].getNext();
+					}
+					size--;
+					return true;
+				}
+				else{
+					current = table[i];
+				}
+				while(current!=null){						
+					if(current.getNext().getKey().equals(searchKey)){
+						if(current.getNext().getNext()==null){
+							current.setNext(null);
+						}
+						else{
+							current.setNext(current.getNext().getNext());
+						}
+						size--;
 						return true;
 					}
-					while(current!=null){						
-						if(current.getNext().getKey().equals(searchKey)){
-							current.setNext(current.getNext().getNext());
-							size--;
-							return true;
-						}
-						current = current.getNext();
-					}
+					current = current.getNext();
 				}
 			}
 		}	
@@ -61,10 +72,17 @@ public class HashTable<K, V> implements HashTableInterface<K,V> {
 	}
 
 	public V tableRetrieve(K searchKey){
+		ChainNode<K, V> current = null;
 		if(size>0){
 			for(int i = 0; i<3; i++){
 				if(table[i]!=null){
-					ChainNode<K, V> current = table[i];
+					if(table[i].getKey().equals(searchKey)){
+						return (V)table[i].getValue();
+					}
+					else{
+						current = table[i];
+					}
+					
 					while(current.getNext()!=null){		  
 						if(current.getNext().getKey().equals(searchKey)){													
 							return current.getNext().getValue();
@@ -79,11 +97,26 @@ public class HashTable<K, V> implements HashTableInterface<K,V> {
 
 
 	public int hashIndex(K key){
-		for(int i = 0; i<size; i++){
-			if(table[i].getKey()==key){
-				return i;
+		ChainNode<K, V> current = null;
+		if(size>0){
+			for(int i = 0; i<3; i++){
+				if(table[i]!=null){
+					if(table[i].getKey().equals(key)){
+						return i;
+					}
+					else{
+						current = table[i];
+					}
+					
+					while(current.getNext()!=null){		  
+						if(current.getNext().getKey().equals(key)){													
+							return i;
+						}
+						current = current.getNext();
+					}
+				}
 			}
-		}
+		}	
 		return -1;
 	}
 

@@ -32,7 +32,8 @@ public class Driver {
 					int currentMapNumber = (char)charVal[i]-64;
 					total += currentMapNumber * Math.pow(32,exp--);
 				}
-				table.tableInsert(s,total%3);
+				table.tableInsert(s,total);
+				System.out.println("Item " + s + " added.");
 				break;
 
 			case 2:
@@ -52,7 +53,7 @@ public class Driver {
 				String s2 = read.readLine();
 				Integer val = table.tableRetrieve(s2);
 				if(val!=null){
-					System.out.println("The hash value for this symbol is: " + val);
+					System.out.println("The hash value for the symbol " + s2 + " is: " + val);
 				}
 				else{
 					System.out.println("Does not exist.");
@@ -61,6 +62,13 @@ public class Driver {
 			case 4:
 				System.out.println("Enter a symbol to return its hash index: ");
 				String s3 = read.readLine();
+				int hashIndex = table.hashIndex(s3);
+				if(hashIndex>0){
+					System.out.println("The hash index for " + s3 + " is: " + hashIndex);
+				}
+				else{
+					System.out.println("This symbol does not exist.");
+				}
 				break;
 
 			case 5:
